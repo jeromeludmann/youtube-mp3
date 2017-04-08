@@ -1,0 +1,26 @@
+{
+  "name": "youtube-mp3",
+  "version": "0.0.1",
+  "description": "Extract audio from Youtube video",
+  "main": "dist/youtube-mp3.js",
+  "scripts": {
+    "postinstall": "npm run build; mkdir -p bin; curl -L https://yt-dl.org/downloads/latest/youtube-dl -o bin/youtube-dl",
+    "build": "babel src/ --out-dir dist/",
+    "clean": "rimraf dist/ bin/"
+  },
+  "keywords": [
+    "youtube",
+    "mp3",
+    "extract",
+    "download",
+    "audio"
+  ],
+  "author": "Jerome Ludmann",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-cli": "^6.24.0",
+    "babel-preset-es2015": "^6.24.0",
+    "babel-register": "^6.24.0",
+    "rimraf": "^2.6.1"
+  }
+}
