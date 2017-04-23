@@ -1,5 +1,6 @@
 import fs from 'fs'
 import url from 'url'
+import path from 'path'
 import EventEmitter from 'events'
 import { spawn } from 'child_process'
 
@@ -45,7 +46,7 @@ export default class YoutubeMP3 extends EventEmitter {
 
     this.emit('data', JSON.stringify(youtubeDlArgs))
 
-    const youtubedl = spawn('bin/youtube-dl', youtubeDlArgs)
+    const youtubedl = spawn(path.resolve(__dirname, '..', 'bin', 'youtube-dl'), youtubeDlArgs)
 
     const onData = data => {
       const filter = '[ffmpeg] Adding metadata to'
