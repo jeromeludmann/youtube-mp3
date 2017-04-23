@@ -4,7 +4,7 @@
   "description": "Extract audio from Youtube video",
   "main": "dist/youtube-mp3.js",
   "scripts": {
-    "postinstall": "npm run build; mkdir -p bin; curl -L https://yt-dl.org/downloads/latest/youtube-dl -o bin/youtube-dl",
+    "postinstall": "npm run build; mkdir -p bin; curl -L https://yt-dl.org/downloads/latest/youtube-dl -o bin/youtube-dl; chmod +x bin/youtube-dl",
     "build": "babel src/ --out-dir dist/",
     "clean": "rimraf dist/ bin/"
   },
