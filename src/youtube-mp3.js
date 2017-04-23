@@ -6,7 +6,8 @@ import { spawn } from 'child_process'
 
 const METADATA_ARGS = {
   'opus': '0:s:0',
-  'm4a': '0'
+  'm4a': '0',
+  'ogg': '0:s:0'
 }
 
 export default class YoutubeMP3 extends EventEmitter {
