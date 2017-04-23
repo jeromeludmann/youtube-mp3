@@ -1,6 +1,6 @@
 # youtube-mp3
 
-Just a stupid wrapper based on [youtube-dl](https://github.com/rg3/youtube-dl/) and [ffmpeg](https://ffmpeg.org/).
+Basic wrapper based on [youtube-dl](https://github.com/rg3/youtube-dl/) and [ffmpeg](https://ffmpeg.org/).
 
 Extract **audio only** from Youtube video.
 
@@ -10,15 +10,22 @@ Extract **audio only** from Youtube video.
 npm install
 ```
 
-## API
+## API usage
 
 ```javascript
 import YoutubeMP3 from './youtube-mp3'
 
-const process = new YoutubeMP3({
+const process = new YoutubeMP3([{
   youtubeUrl: 'https://www.youtube.com/watch?v=XXXXXXXXXXX',
-  quality: '320k'
-})
+  quality: '320k',
+  start: '00:01:23'
+},{
+  youtubeUrl: 'https://www.youtube.com/watch?v=YYYYYYYYYYY',
+  quality: '128k'
+},{
+  youtubeUrl: 'https://www.youtube.com/watch?v=ZZZZZZZZZZZ',
+  quality: '256k'
+}])
 
 process.on('data', line => {
   console.log(line)
@@ -34,3 +41,16 @@ process.on('error', (filename, code) => {
 
 process.start()
 ```
+
+## To do
+
+### Core
+
+ - Add at least one unit test
+ - Default parameters to avoid repeating same parameters
+
+### Web app
+
+ - **Need HTML/CSS parts** to use within a web app
+ - Web Socket architecture (using Express/socket.io?)
+ 
