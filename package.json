@@ -6,7 +6,8 @@
   "scripts": {
     "postinstall": "npm run build; mkdir -p bin; curl -L https://yt-dl.org/downloads/latest/youtube-dl -o bin/youtube-dl; chmod +x bin/youtube-dl",
     "build": "babel src/ --out-dir dist/",
-    "clean": "rimraf dist/ bin/"
+    "clean": "rimraf dist/ bin/",
+    "dev": "node -r babel-register src/test.js"
   },
   "keywords": [
     "youtube",
