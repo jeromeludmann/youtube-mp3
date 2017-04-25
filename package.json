@@ -28,6 +28,8 @@
   },
   "dependencies": {
     "express": "^4.15.2",
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4",
     "socket.io": "^1.7.3"
   }
 }
