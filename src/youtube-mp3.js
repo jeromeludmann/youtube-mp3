@@ -10,28 +10,44 @@ const METADATA_ARGS = {
   'ogg': '0:s:0'
 }
 
+const DEFAULT_QUALITY = '320k'
+
 export default class YoutubeMP3 extends EventEmitter {
-  constructor(params) {
-    super(params)
-    this.params = params
+  constructor(videos) {
+    super(videos)
+    this.videos = videos
   }
 
   /**
-   * Start audio extraction process
+   * Start audio extraction process by running tasks ('videos') sequentially
    */
   async start() {
-    for (const param of this.params) {
-      await this.downloadFromYoutube(param)
+    for (const video of this.videos) {
+      // 'videoId' is used as a key to determinate the different parts
+      // if we parallelize the Youtube calls in the future.
+      const youtubeId = url.parse(video.url, true).query.v
+
+      const downloadedFile = await this.downloadFromYoutube({
+        key: youtubeId,
+        url: video.url
+      })
+
+      const encodedFile = await this.convertToMp3({
+        key: youtubeId,
+        sourceFile: downloadedFile,
+        options: video.options,
+        parts: video.parts // TODO next step: video parts management
+      })
     }
   }
 
   /**
    * Extract audio stream from Youtube video
    */
-  downloadFromYoutube(param) {
+  downloadFromYoutube({ key, url }) {
     return new Promise((resolve, reject) => {
       let extractedFile = null
-      const baseFilename = `${Date.now()}_${url.parse(param.youtubeUrl, true).query.v}`
+      const targetFileBaseName = `${key}`
 
       const youtubeDlArgs = [
         '--verbose',
@@ -39,9 +55,9 @@ export default class YoutubeMP3 extends EventEmitter {
         '--extract-audio',
         // '--prefer-ffmpeg',
         // '--prefer-avconv',
-        param.youtubeUrl,
+        url,
         '-o',
-        `${baseFilename}.%(ext)s`
+        `${targetFileBaseName}.%(ext)s`
       ]
 
       this.emit('data', JSON.stringify(youtubeDlArgs))
@@ -50,17 +66,18 @@ export default class YoutubeMP3 extends EventEmitter {
 
       const onData = data => {
         const filter = '[ffmpeg] Adding metadata to'
-        const line = data.toString()
+        const outputLine = data.toString()
 
-        if (line.indexOf(filter) > -1) {
-          extractedFile = line.slice(filter.length + 2, line.length - 2).trim()
+        if (outputLine.indexOf(filter) > -1) {
+          extractedFile = outputLine.slice(filter.length + 2, outputLine.length - 2).trim()
         }
 
-        this.emit('data', line)
+        this.emit('downloading', key, outputLine)
       }
 
       const onClose = code => {
-        resolve(this.convertToMp3(param, extractedFile, baseFilename))
+        this.emit('downloaded', key, code === 0)
+        resolve(extractedFile)
       }
 
       youtubedl.stdout.on('data', onData)
@@ -70,45 +87,51 @@ export default class YoutubeMP3 extends EventEmitter {
   }
 
   /**
-   * Convert the given source file to MP3
+   * Convert the source file to MP3 part(s)
+   *
+   * If no specific part is given in the 'options' object,
+   * only one global part will be generated.
    */
-  convertToMp3(param, src, dest) {
+  convertToMp3({ key, sourceFile, options = {}, parts = [] }) {
     return new Promise((resolve, reject) => {
       const ffmpegArgs = [
         '-loglevel', 'verbose',
-        '-i', src,
+        '-i', sourceFile,
         '-vn',
         '-sn',
         '-y',
         '-c:a', 'mp3'
       ]
 
-      const extension = src.slice(src.lastIndexOf('.') + 1)
+      const extension = sourceFile.slice(sourceFile.lastIndexOf('.') + 1)
       const metadataArg = METADATA_ARGS[extension]
       if (!metadataArg) {
         throw new Error(`file extension ${extension} not found in metadata args`)
       }
       ffmpegArgs.push('-map_metadata', metadataArg)
 
-      if (param.tags) {
-        ffmpegArgs.push('-metadata', `title=${param.tags.title}`)
-        ffmpegArgs.push('-metadata', `artist=${param.tags.artist}`)
-        ffmpegArgs.push('-metadata', `album=${param.tags.album}`)
-      }
+      // for (const part of parts) { }
 
-      ffmpegArgs.push('-b:a', param.quality
-        ? param.quality
-        : '320k')
+      ffmpegArgs.push('-b:a', options.quality
+        ? options.quality
+        : DEFAULT_QUALITY)
 
-      if (param.start) {
-        ffmpegArgs.push('-ss', param.start)
-      }
+      // if (part.tags) {
+      //   ffmpegArgs.push('-metadata', `title=${options.tags.title}`)
+      //   ffmpegArgs.push('-metadata', `artist=${options.tags.artist}`)
+      //   ffmpegArgs.push('-metadata', `album=${options.tags.album}`)
+      // }
 
-      if (param.duration) {
-        ffmpegArgs.push('-t', param.duration)
-      }
+      // if (part.start) {
+      //   ffmpegArgs.push('-ss', options.start)
+      // }
 
-      const filename = `${dest}.mp3`
+      // TODO convert duration to 'end' position instead      
+      // if (part.duration) {
+      //   ffmpegArgs.push('-t', options.duration)
+      // }
+
+      const filename = `${key}_${Date.now()}.mp3`
       ffmpegArgs.push(filename)
 
       this.emit('data', JSON.stringify(ffmpegArgs))
@@ -116,27 +139,25 @@ export default class YoutubeMP3 extends EventEmitter {
       const ffmpeg = spawn('ffmpeg', ffmpegArgs)
 
       const onData = data => {
-        const line = data.toString()
-        this.emit('data', line)
+        const outputLine = data.toString()
+        this.emit('encoding', key, outputLine)
       }
 
       const onClose = code => {
-        fs.unlink(src, err => {
+        // Remove temporary file
+        fs.unlink(sourceFile, err => {
           if (err) {
-            this.emit('error', `Error while removing temporary file: ${src}`)
-          } else {
-            this.emit('data', `Temporary file removed: ${src}`)
+            console.error(`Error while removing temporary file: ${sourceFile}`)
           }
-
-          if (code !== 0) {
-            this.emit('error', filename, code)
-            reject(new Error(code))
-            return
-          }
-
-          this.emit('success', filename)
-          resolve(filename)
         })
+
+        this.emit('encoded', key, code === 0)
+
+        if (code === 0) {
+          resolve(filename)
+        } else {
+          reject(new Error(code))
+        }
       }
 
       ffmpeg.stdout.on('data', onData)
