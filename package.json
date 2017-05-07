@@ -5,7 +5,7 @@
   "main": "dist/youtube-mp3.js",
   "scripts": {
     "postinstall": "npm run build; mkdir -p bin; curl -L https://yt-dl.org/downloads/latest/youtube-dl -o bin/youtube-dl; chmod +x bin/youtube-dl",
-    "build": "babel src/ --out-dir dist/ --source-maps",
+    "build": "babel src/ --out-dir dist/",
     "clean": "rimraf dist/ bin/",
     "dev": "node -r babel-register src/test.js"
   },
