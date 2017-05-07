@@ -40,6 +40,10 @@ export function encodeToMp3({ key, sourceFile, params = {}, slice = {} }, callba
       ffmpegArgs.push('-ss', slice.start)
     }
 
+    if (slice.end) {
+      ffmpegArgs.push('-to', slice.end)
+    }
+
     if (slice.duration) {
       ffmpegArgs.push('-t', slice.duration)
     }
