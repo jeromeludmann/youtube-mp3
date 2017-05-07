@@ -1,8 +1,8 @@
 {
-  "name": "youtube-mp3",
+  "name": "youtube-slicer",
   "version": "0.2.0",
-  "description": "Extract audio from Youtube video",
-  "main": "dist/youtube-mp3.js",
+  "description": "Get and slice audio from Youtube videos",
+  "main": "dist/index.js",
   "scripts": {
     "postinstall": "npm run build; mkdir -p bin; curl -L https://yt-dl.org/downloads/latest/youtube-dl -o bin/youtube-dl; chmod +x bin/youtube-dl",
     "build": "babel src/ --out-dir dist/",
@@ -12,9 +12,10 @@
   "keywords": [
     "youtube",
     "mp3",
-    "extract",
+    "audio",
     "download",
-    "audio"
+    "slice",
+    "encode"
   ],
   "author": "Jerome Ludmann",
   "license": "MIT",
