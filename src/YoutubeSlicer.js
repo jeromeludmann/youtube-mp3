@@ -40,7 +40,11 @@ export default class YoutubeSlicer extends EventEmitter {
 
           // avoid specifying "end" if the next "start" value is the same
           if (slice.end === 'next') {
-            slice.end = video.slices[Number(k) + 1].start
+            if (k < video.slices.length - 1) {
+              slice.end = video.slices[Number(k) + 1].start
+            } else {
+              delete slice.end
+            }
           }
 
           if (!slice.tags) {
