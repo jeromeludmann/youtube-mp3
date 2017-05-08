@@ -30,11 +30,11 @@ export function downloadFromYoutube({ key, url }, callback) {
     }
 
     const onClose = code => {
-      // if (code === 0) {
-        resolve(extractedFile)
-      // } else {
-      //   reject(new Error(`Error while downloading Youtube video ID: ${key}`))
-      // }
+      if (code !== 0) {
+        console.error(`Error while downloading Youtube video ID: ${key}`)
+      }
+
+      resolve(extractedFile)
     }
 
     youtubedl.stdout.on('data', onData)

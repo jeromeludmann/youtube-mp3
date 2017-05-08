@@ -8,9 +8,9 @@ const METADATA_ARGS = {
   'ogg': '0:s:0'
 }
 
-export function encodeToMp3({ key, sourceFile, params = {}, slice = { tags: {} } }, callback) {
+export function encodeToMp3({ key, sourceFile, quality, slice = { tags: {} } }, callback) {
   return new Promise((resolve, reject) => {
-    const args = getArguments(key, sourceFile, params.quality, slice)
+    const args = getArguments(key, sourceFile, quality, slice)
     const filename = generateFilename(key, slice)
     args.push(filename)
 
@@ -21,11 +21,11 @@ export function encodeToMp3({ key, sourceFile, params = {}, slice = { tags: {} }
     }
 
     const onClose = code => {
-      if (code === 0) {
-        resolve(filename)
-      } else {
-        reject(new Error(`Error while encoding Youtube video ID: ${key}`))
+      if (code !== 0) {
+        console.error(`Error while encoding Youtube video ID: ${key}`)
       }
+
+      resolve(filename)
     }
 
     ffmpeg.stdout.on('`dat`a', onData)
