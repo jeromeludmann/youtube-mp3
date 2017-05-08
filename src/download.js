@@ -6,14 +6,14 @@ export function downloadFromYoutube({ key, url }, callback) {
     let extractedFile = null
 
     const youtubeDlArgs = [
-      '--verbose',
+      // '--verbose',
       '--add-metadata',
       '--extract-audio',
       // '--prefer-ffmpeg',
       // '--prefer-avconv',
       url,
       '-o',
-      `${key}.%(ext)s`
+      `_${key}.%(ext)s`
     ]
 
     const youtubedl = spawn(path.resolve(__dirname, '..', 'bin', 'youtube-dl'), youtubeDlArgs)
@@ -30,11 +30,11 @@ export function downloadFromYoutube({ key, url }, callback) {
     }
 
     const onClose = code => {
-      if (code === 0) {
+      // if (code === 0) {
         resolve(extractedFile)
-      } else {
-        reject(new Error(`Error while downloading Youtube video ID: ${key}`))
-      }
+      // } else {
+      //   reject(new Error(`Error while downloading Youtube video ID: ${key}`))
+      // }
     }
 
     youtubedl.stdout.on('data', onData)
