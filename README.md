@@ -18,32 +18,30 @@ import YoutubeSlicer from './YoutubeSlicer'
 const youtubeSlicer = new YoutubeSlicer([
   {
     url: 'https://www.youtube.com/watch?v=XXXXXXXXXXX',
-    options: {
-      quality: '320k'
-    },
+    quality: '320k',
     slices: [
       {
         start: '00:01:23',
-        duration: '00:15:30', // temporary feature (will be improved)
+        end: '00:02:34',
         tags: {
           artist: 'XXXXX',
           title: 'YYYYY',
           album: 'ZZZZZ'
         }
-      }
+      },
+      ... 
     ]
   },
   {
     url: 'https://www.youtube.com/watch?v=YYYYYYYYYYY',
-    options: {
-      quality: '128k'
-    },
+    quality: '128k',
+    slices: [
+      ...
+    ]
   },
   {
     url: 'https://www.youtube.com/watch?v=ZZZZZZZZZZZ',
-    options: {
-      quality: '256k'
-    }
+    quality: '256k'
   }
 ])
 
