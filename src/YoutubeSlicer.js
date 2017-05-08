@@ -32,36 +32,32 @@ export default class YoutubeSlicer extends EventEmitter {
         const encodedFiles = []
 
         if (!video.slices || video.slices.length === 0) {
+          video.slices = [{}]
+        }
+
+        for (const k in video.slices) {
+          const slice = video.slices[k]
+
+          // avoid specifying "end" if the next "start" value is the same
+          if (slice.end === 'next') {
+            slice.end = video.slices[Number(k) + 1].start
+          }
+
+          if (!slice.tags) {
+            slice.tags = {}
+          }
+
+          slice.tags.track = Number(k) + 1
+
           encodedFiles.push(await encodeToMp3({
             key: youtubeId,
             sourceFile: downloadedFile,
-            params: video.params
+            quality: video.quality,
+            slice
           }, (key, outputLine) => this.emit('encoding', key, outputLine)))
-        } else {
-          for (const k in video.slices) {
-            const slice = video.slices[k]
-
-            // avoid specifying "end" if the next "start" value is the same
-            if (slice.end === 'next') {
-              slice.end = video.slices[Number(k) + 1].start
-            }
-
-            if (!slice.tags) {
-              slice.tags = {}
-            }
-
-            slice.tags.track = Number(k) + 1
-
-            encodedFiles.push(await encodeToMp3({
-              key: youtubeId,
-              sourceFile: downloadedFile,
-              params: video.params,
-              slice
-            }, (key, outputLine) => this.emit('encoding', key, outputLine)))
-          }
-
-          this.emit('encoded', youtubeId, encodedFiles)
         }
+
+        this.emit('encoded', youtubeId, encodedFiles)
       }
     } catch (err) {
       this.emit('error', youtubeId, err)
