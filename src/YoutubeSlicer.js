@@ -38,7 +38,20 @@ export default class YoutubeSlicer extends EventEmitter {
             params: video.params
           }, (key, outputLine) => this.emit('encoding', key, outputLine)))
         } else {
-          for (const slice of video.slices) {
+          for (const k in video.slices) {
+            const slice = video.slices[k]
+
+            // avoid specifying "end" if the next "start" value is the same
+            if (slice.end === 'next') {
+              slice.end = video.slices[Number(k) + 1].start
+            }
+
+            if (!slice.tags) {
+              slice.tags = {}
+            }
+
+            slice.tags.track = Number(k) + 1
+
             encodedFiles.push(await encodeToMp3({
               key: youtubeId,
               sourceFile: downloadedFile,
