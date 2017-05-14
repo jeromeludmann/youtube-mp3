@@ -17,15 +17,14 @@ export default class YoutubeSlicer extends EventEmitter {
 
     try {
       for (const video of this.videos) {
-        // 'videoId' is used as a key to determinate the different slices
-        // if we parallelize the Youtube calls in the future.
-        youtubeId = url.parse(video.url, true).query.v
+        // 'youtubeId' is used as a key to identify the different slices
+        // if we decide to parallelize the Youtube calls in the next releases.
+        youtubeId = this.getIdFromYoutubeUrl(video.url)
 
         downloadedFile = await downloadFromYoutube({
           key: youtubeId,
           url: video.url
-        },
-          (key, outputLine) => this.emit('downloading', key, outputLine))
+        }, (key, outputLine) => this.emit('downloading', key, outputLine))
 
         this.emit('downloaded', youtubeId, downloadedFile)
 
@@ -73,5 +72,11 @@ export default class YoutubeSlicer extends EventEmitter {
         }
       })
     }
+  }
+
+  getIdFromYoutubeUrl(youtubeUrl) {
+    return youtubeUrl.includes('youtu.be')
+      ? url.parse(youtubeUrl, false).pathname.slice(1)
+      : url.parse(youtubeUrl, true).query.v
   }
 }
