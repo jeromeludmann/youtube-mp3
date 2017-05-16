@@ -15,7 +15,7 @@ npm install
 ```javascript
 import YoutubeSlicer from './YoutubeSlicer'
 
-const youtubeSlicer = new YoutubeSlicer([
+const youtubeSlicer = new YoutubeSlicer('/music/', [
   {
     url: 'https://www.youtube.com/watch?v=XXXXXXXXXXX',
     quality: '320k',

@@ -1,3 +1,5 @@
+import fs from 'fs'
+import path from 'path'
 import { spawn } from 'child_process'
 
 const DEFAULT_QUALITY = '320k'
@@ -8,10 +10,14 @@ const METADATA_ARGS = {
   'ogg': '0:s:0'
 }
 
-export function encodeToMp3({ key, sourceFile, quality, slice = { tags: {} } }, callback) {
+export function encodeToMp3({ key, sourceFile, quality, slice = { tags: {} }, target }, callback) {
   return new Promise((resolve, reject) => {
+    if (!fs.existsSync(target)) {
+      fs.mkdirSync(target)
+    }
+
     const args = getArguments(key, sourceFile, quality, slice)
-    const filename = generateFilename(key, slice)
+    const filename = path.resolve(target, generateFilename(key, slice))
     args.push(filename)
 
     const ffmpeg = spawn('ffmpeg', args)

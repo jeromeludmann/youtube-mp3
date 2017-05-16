@@ -1,4 +1,5 @@
 import fs from 'fs'
+import path from 'path'
 import url from 'url'
 import EventEmitter from 'events'
 
@@ -6,8 +7,9 @@ import { downloadFromYoutube } from './download'
 import { encodeToMp3 } from './encode'
 
 export default class YoutubeSlicer extends EventEmitter {
-  constructor(videos) {
-    super(videos)
+  constructor(output, videos) {
+    super(output, videos)
+    this.output = output
     this.videos = videos
   }
 
@@ -16,6 +18,10 @@ export default class YoutubeSlicer extends EventEmitter {
     let downloadedFile = null
 
     try {
+      if (!fs.existsSync(this.output)) {
+        fs.mkdirSync(this.output)
+      }
+
       for (const video of this.videos) {
         // 'youtubeId' is used as a key to identify the different slices
         // if we decide to parallelize the Youtube calls in the next releases.
@@ -23,7 +29,8 @@ export default class YoutubeSlicer extends EventEmitter {
 
         downloadedFile = await downloadFromYoutube({
           key: youtubeId,
-          url: video.url
+          url: video.url,
+          target: path.resolve(this.output, 'tmp')
         }, (key, outputLine) => this.emit('downloading', key, outputLine))
 
         this.emit('downloaded', youtubeId, downloadedFile)
@@ -56,7 +63,8 @@ export default class YoutubeSlicer extends EventEmitter {
             key: youtubeId,
             sourceFile: downloadedFile,
             quality: video.quality,
-            slice
+            slice,
+            target: path.resolve(this.output, `_${youtubeId}`)
           }, (key, outputLine) => this.emit('encoding', key, outputLine)))
         }
 

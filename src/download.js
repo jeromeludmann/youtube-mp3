@@ -1,7 +1,7 @@
 import path from 'path'
 import { spawn } from 'child_process'
 
-export function downloadFromYoutube({ key, url }, callback) {
+export function downloadFromYoutube({ key, url, target }, callback) {
   return new Promise((resolve, reject) => {
     let extractedFile = null
 
@@ -13,7 +13,7 @@ export function downloadFromYoutube({ key, url }, callback) {
       // '--prefer-avconv',
       url,
       '-o',
-      `_${key}.%(ext)s`
+      path.resolve(target, `_${key}.%(ext)s`)
     ]
 
     const youtubedl = spawn(path.resolve(__dirname, '..', 'bin', 'youtube-dl'), youtubeDlArgs)
