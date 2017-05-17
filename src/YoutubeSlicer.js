@@ -2,6 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import url from 'url'
 import EventEmitter from 'events'
+import rimraf from 'rimraf'
 
 import { downloadFromYoutube } from './download'
 import { encodeToMp3 } from './encode'
@@ -73,11 +74,9 @@ export default class YoutubeSlicer extends EventEmitter {
     } catch (err) {
       this.emit('error', youtubeId, err)
     } finally {
-      // Remove temporary downloaded file
-      fs.unlink(downloadedFile, err => {
-        if (err) {
-          console.error(`Error while removing temporary file: ${sourceFile}`)
-        }
+      // Remove temporary folder
+      rimraf(path.resolve(this.output, 'tmp'), () => {
+        console.log('tmp removed')
       })
     }
   }
