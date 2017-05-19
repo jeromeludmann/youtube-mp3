@@ -1,8 +1,10 @@
-# Youtube Slicer
+# Youtube MP3 Slicer
 
 Youtube downloader/MP3 encoder wrapper based on [youtube-dl](https://github.com/rg3/youtube-dl/) and [ffmpeg](https://ffmpeg.org/).
 
-Get and slice **audio only** from Youtube videos.
+Get and slice MP3 (audio only) from Youtube videos.
+
+**TO DO: Need web front-end (HTML/CSS/VueJS/whatever)**
 
 ## Install
 
@@ -18,7 +20,7 @@ import YoutubeSlicer from './YoutubeSlicer'
 const youtubeSlicer = new YoutubeSlicer('/music/', [
   {
     url: 'https://www.youtube.com/watch?v=XXXXXXXXXXX',
-    quality: '320k',
+    quality: '256k',
     slices: [
       {
         start: '00:01:23',
@@ -41,7 +43,11 @@ const youtubeSlicer = new YoutubeSlicer('/music/', [
   },
   {
     url: 'https://www.youtube.com/watch?v=ZZZZZZZZZZZ',
-    quality: '256k'
+    tags: { // override default tags
+      artist: 'XXXXX',
+      title: 'YYYYY',
+      album: 'ZZZZZ'
+    }
   }
 ])
 
@@ -67,15 +73,3 @@ youtubeSlicer.on('error', (videoId, err) => {
 
 youtubeSlicer.run()
 ```
-
-## To do
-
-### Core
-
- - Add at least one unit test
-
-### Web app
-
- - Front-end: why does not use Vue.js?
- - Web Socket: Express/socket.io?
- 
