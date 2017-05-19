@@ -39,7 +39,10 @@ export default class YoutubeSlicer extends EventEmitter {
         const encodedFiles = []
 
         if (!video.slices || video.slices.length === 0) {
-          video.slices = [{}]
+          video.slices = []
+          const defaultSlice = {}
+          defaultSlice.tags = video.tags
+          video.slices.push(defaultSlice)
         }
 
         for (const k in video.slices) {
