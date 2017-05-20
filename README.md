@@ -35,7 +35,7 @@ const youtubeSlicer = new YoutubeSlicer(
       url: 'https://www.youtube.com/watch?v=YYYYY',
 
       // MP3 encoding quality (optional)
-      // default to 320k
+      // default: 320k
       quality: '256k',
 
       // override the default tags (optional)
@@ -57,10 +57,12 @@ const youtubeSlicer = new YoutubeSlicer(
         // first slice
         {
           // the start of the slice (optional)
+          // default: start of the video
           start: '00:00:00',
 
           // the end of this slice (optional)
           // 'next' reference the start value of the next slice
+          // default: end of the video
           end: 'next'
         },
 
