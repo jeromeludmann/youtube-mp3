@@ -31,7 +31,7 @@ export default class YoutubeSlicer extends EventEmitter {
         downloadedFile = await downloadFromYoutube({
           key: youtubeId,
           url: video.url,
-          target: path.resolve(this.output, 'tmp')
+          target: path.resolve(this.output, 'tmp', `youtube_${youtubeId}.%(ext)s`)
         }, (key, outputLine) => this.emit('downloading', key, outputLine))
 
         this.emit('downloaded', youtubeId, downloadedFile)
@@ -44,6 +44,8 @@ export default class YoutubeSlicer extends EventEmitter {
           defaultSlice.tags = video.tags
           video.slices.push(defaultSlice)
         }
+
+        const timestamp = Date.now()
 
         for (const k in video.slices) {
           const slice = video.slices[k]
@@ -68,7 +70,7 @@ export default class YoutubeSlicer extends EventEmitter {
             sourceFile: downloadedFile,
             quality: video.quality,
             slice,
-            target: path.resolve(this.output, `_${youtubeId}`)
+            target: path.resolve(this.output, `youtube_${youtubeId}_${timestamp}`)
           }, (key, outputLine) => this.emit('encoding', key, outputLine)))
         }
 

@@ -13,7 +13,7 @@ export function downloadFromYoutube({ key, url, target }, callback) {
       // '--prefer-avconv',
       url,
       '-o',
-      path.resolve(target, `_${key}.%(ext)s`)
+      target
     ]
 
     const youtubedl = spawn(path.resolve(__dirname, '..', 'bin', 'youtube-dl'), youtubeDlArgs)

@@ -34,7 +34,7 @@ export function encodeToMp3({ key, sourceFile, quality, slice = { tags: {} }, ta
       resolve(filename)
     }
 
-    ffmpeg.stdout.on('`dat`a', onData)
+    ffmpeg.stdout.on('data', onData)
     ffmpeg.stderr.on('data', onData)
     ffmpeg.on('close', onClose)
   })
@@ -91,23 +91,31 @@ function getArguments(key, sourceFile, quality, slice) {
 }
 
 function generateFilename(key, slice) {
-  let filename = ''
-
-  if (slice.tags.artist) {
-    filename = slice.tags.artist
-  } else {
-    filename = `_${key}`
+  if (!slice.tags) {
+    slice.tags = {}
   }
 
+  if (!slice.start) {
+    slice.start = '00:00:00'
+  }
+
+  const filename = []
+
   if (slice.tags.track) {
-    filename = `${filename} - ${`0${slice.tags.track}`.slice(-2)}`
+    filename.push(`0${slice.tags.track}`.slice(-2))
+  }
+
+  if (slice.tags.artist) {
+    filename.push(slice.tags.artist)
+  } else {
+    filename.push(`youtube_${key}`)
   }
 
   if (slice.tags.title) {
-    filename = `${filename} - ${slice.tags.title}`
-  } else if (slice.tags.start) {
-    filename = `${filename} - ${slice.start.replace(/:/g, '')}`
+    filename.push(slice.tags.title)
+  } else {
+    filename.push(slice.start.replace(/:/g, ''))
   }
 
-  return `${filename}.mp3`
+  return `${filename.join(' - ')}.mp3`
 }
