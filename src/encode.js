@@ -42,7 +42,7 @@ export function encodeToMp3({ key, sourceFile, quality, slice = { tags: {} }, ta
 
 function getArguments(key, sourceFile, quality, slice) {
   const ffmpegArgs = [
-    // '-loglevel', 'verbose',
+    '-loglevel', 'verbose',
     '-i', sourceFile,
     '-vn',
     '-sn',
@@ -117,5 +117,5 @@ function generateFilename(key, slice) {
     filename.push(slice.start.replace(/:/g, ''))
   }
 
-  return `${filename.join(' - ')}.mp3`
+  return `${filename.join(' - ').replace(/\//, '⁄')}.mp3`
 }
