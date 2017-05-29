@@ -8,9 +8,9 @@ import { downloadFromYoutube } from './download'
 import { encodeToMp3 } from './encode'
 
 export default class YoutubeSlicer extends EventEmitter {
-  constructor(output, videos) {
+  constructor(output = '', videos = []) {
     super(output, videos)
-    this.output = output
+    this.output = output.trim()
     this.videos = videos
   }
 
@@ -24,6 +24,8 @@ export default class YoutubeSlicer extends EventEmitter {
       }
 
       for (const video of this.videos) {
+        video.url = video.url.trim()
+
         // 'youtubeId' is used as a key to identify the different slices
         // if we decide to parallelize the Youtube calls in the next releases.
         youtubeId = this.getIdFromYoutubeUrl(video.url)
@@ -39,8 +41,7 @@ export default class YoutubeSlicer extends EventEmitter {
         const encodedFiles = []
 
         // in all cases, we create at least one slice with default tags
-        if (!video.slices || video.slices.length === 0) {
-          video.slices = []
+        if (video.slices.length === 0) {
           const defaultSlice = {}
           defaultSlice.tags = video.tags
           video.slices.push(defaultSlice)

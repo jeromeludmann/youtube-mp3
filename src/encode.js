@@ -76,15 +76,15 @@ function getArguments(key, sourceFile, quality, slice) {
   }
 
   if (slice.start) {
-    ffmpegArgs.push('-ss', slice.start)
+    ffmpegArgs.push('-ss', slice.start.trim())
   }
 
   if (slice.end) {
-    ffmpegArgs.push('-to', slice.end)
+    ffmpegArgs.push('-to', slice.end.trim())
   }
 
   if (slice.duration) {
-    ffmpegArgs.push('-t', slice.duration)
+    ffmpegArgs.push('-t', slice.duration.trim())
   }
 
   return ffmpegArgs
