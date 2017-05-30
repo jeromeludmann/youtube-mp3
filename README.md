@@ -43,14 +43,20 @@ const youtubeSlicer = new YoutubeSlicer(
       // no effects with a given slices[] attribute
       tags: {
         artist: 'XXXXX',
-        title: 'YYYYY',
-        album: 'ZZZZZ'
+        album: 'YYYYY',
+        title: 'ZZZZZ'
       }
     },
 
     // advanced use with given slices
     {
       url: 'https://www.youtube.com/watch?v=ZZZZZ',
+
+      // default tags used by following slices
+      tags: {
+        artist: 'XXXXX',
+        album: 'YYYYY'
+      },
 
       // all the parts you want to slice (optional)
       slices: [
@@ -72,10 +78,9 @@ const youtubeSlicer = new YoutubeSlicer(
           end: '00:02:34',
           
           // rewrite the tags for this slice (optional)
+          // inherit from default tags
           tags: {
-            artist: 'XXXXX',
-            title: 'YYYYY',
-            album: 'ZZZZZ'
+            title: 'ZZZZZ'
           }
         },
         
