@@ -41,6 +41,9 @@ export default class YoutubeSlicer extends EventEmitter {
         const encodedFiles = []
 
         // in all cases, we create at least one slice with default tags
+        if (!video.slices) {
+          video.slices = []
+        }
         if (video.slices.length === 0) {
           const defaultSlice = {}
           defaultSlice.tags = video.tags
@@ -61,14 +64,12 @@ export default class YoutubeSlicer extends EventEmitter {
             }
           }
 
-          // inherit tags from related video if needed
-          if (!slice.tags) {
-            slice.tags = {}
-          }
+          // inherit tags from related video/slices if needed
+          video.tags = video.tags || {}
+          slice.tags = slice.tags || {}
           slice.tags.artist = slice.tags.artist || video.tags.artist
           slice.tags.album = slice.tags.album || video.tags.album
           slice.tags.title = slice.tags.title || video.tags.title
-
           slice.tags.track = Number(k) + 1
 
           encodedFiles.push(await encodeToMp3({

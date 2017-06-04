@@ -11,6 +11,7 @@ export function downloadFromYoutube({ key, url, target }, callback) {
       '--extract-audio',
       // '--prefer-ffmpeg',
       // '--prefer-avconv',
+      '-k',
       url,
       '-o',
       target
