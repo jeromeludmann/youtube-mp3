@@ -7,6 +7,7 @@ export function downloadFromYoutube({ key, url, target }, callback) {
 
     const youtubeDlArgs = [
       // '--verbose',
+      '-f', 'bestaudio',
       '--add-metadata',
       '--extract-audio',
       // '--prefer-ffmpeg',
