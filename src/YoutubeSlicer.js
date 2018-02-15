@@ -8,10 +8,19 @@ import { downloadFromYoutube } from './download'
 import { encodeToMp3 } from './encode'
 
 export default class YoutubeSlicer extends EventEmitter {
-  constructor(output = '', videos = []) {
+  constructor({
+    output = '',
+    videos = null,
+    videoUrl = null
+  }) {
     super(output, videos)
     this.output = output.trim()
-    this.videos = videos
+    if (videos && videoUrl) {
+      throw new Error('videos OR videoUrl should be given, not both')
+    }
+    this.videos = !videos || videos.length === 0
+      ? [{ url: videoUrl }]
+      : videos
   }
 
   async run() {
