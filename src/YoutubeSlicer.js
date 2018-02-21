@@ -86,7 +86,8 @@ export default class YoutubeSlicer extends EventEmitter {
             sourceFile: downloadedFile,
             quality: video.quality,
             slice,
-            target: path.resolve(this.output, `youtube_${youtubeId}_${timestamp}`)
+            target: path.resolve(this.output, `youtube_${youtubeId}_${timestamp}`),
+            withTrackNumber: video.slices.length > 1
           }, (key, outputLine) => this.emit('encoding', key, outputLine)))
         }
 

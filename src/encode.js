@@ -10,14 +10,21 @@ const METADATA_ARGS = {
   'ogg': '0:s:0'
 }
 
-export function encodeToMp3({ key, sourceFile, quality, slice = { tags: {} }, target }, callback) {
+export function encodeToMp3({
+  key,
+  sourceFile,
+  quality,
+  slice = { tags: {} },
+  target,
+  withTrackNumber = true
+}, callback) {
   return new Promise((resolve, reject) => {
     if (!fs.existsSync(target)) {
       fs.mkdirSync(target)
     }
 
     const args = getArguments(key, sourceFile, quality, slice)
-    const filename = path.resolve(target, generateFilename(key, slice))
+    const filename = path.resolve(target, generateFilename(key, slice, withTrackNumber))
     args.push(filename)
 
     const ffmpeg = spawn('ffmpeg', args)
@@ -90,7 +97,7 @@ function getArguments(key, sourceFile, quality, slice) {
   return ffmpegArgs
 }
 
-function generateFilename(key, slice) {
+function generateFilename(key, slice, withTrackNumber = true) {
   if (!slice.tags) {
     slice.tags = {}
   }
@@ -101,7 +108,7 @@ function generateFilename(key, slice) {
 
   const filename = []
 
-  if (slice.tags.track) {
+  if (withTrackNumber && slice.tags.track) {
     filename.push(`0${slice.tags.track}`.slice(-2))
   }
 
