@@ -1,5 +1,6 @@
 import path from 'path'
 import { spawn } from 'child_process'
+import url from 'url'
 
 export function downloadFromYoutube({ key, url, target }, callback) {
   return new Promise((resolve, reject) => {
@@ -13,7 +14,7 @@ export function downloadFromYoutube({ key, url, target }, callback) {
       // '--prefer-ffmpeg',
       // '--prefer-avconv',
       '-k',
-      url,
+      rebuildUrl(url),
       '-o',
       target
     ]
@@ -43,4 +44,9 @@ export function downloadFromYoutube({ key, url, target }, callback) {
     youtubedl.stderr.on('data', onData)
     youtubedl.on('close', onClose)
   })
+}
+
+const rebuildUrl = urlString => {
+  const { protocol, host, pathname, query } = url.parse(urlString, true)
+  return `${protocol}//${host}${pathname}?v=${query.v}`
 }
