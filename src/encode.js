@@ -23,7 +23,7 @@ export function encodeToMp3({
       fs.mkdirSync(target)
     }
 
-    const args = getArguments(key, sourceFile, quality, slice)
+    const args = getArguments(key, sourceFile, quality, slice, withTrackNumber)
     const filename = path.resolve(target, generateFilename(key, slice, withTrackNumber))
     args.push(filename)
 
@@ -47,7 +47,7 @@ export function encodeToMp3({
   })
 }
 
-function getArguments(key, sourceFile, quality, slice) {
+function getArguments(key, sourceFile, quality, slice, withTrackNumber) {
   const ffmpegArgs = [
     '-loglevel', 'verbose',
     '-i', sourceFile,
@@ -66,7 +66,7 @@ function getArguments(key, sourceFile, quality, slice) {
 
   ffmpegArgs.push('-b:a', quality ? quality : DEFAULT_QUALITY)
 
-  if (slice.tags.track) {
+  if (withTrackNumber && slice.tags.track) {
     ffmpegArgs.push('-metadata', `track=${slice.tags.track}`)
   }
 
@@ -97,7 +97,7 @@ function getArguments(key, sourceFile, quality, slice) {
   return ffmpegArgs
 }
 
-function generateFilename(key, slice, withTrackNumber = true) {
+function generateFilename(key, slice, withTrackNumber) {
   if (!slice.tags) {
     slice.tags = {}
   }
