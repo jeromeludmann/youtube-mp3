@@ -1,25 +1,41 @@
-# Youtube MP3 Slicer
+# youtube-to-mp3
 
-Youtube downloader/MP3 encoder wrapper based on [youtube-dl](https://github.com/rg3/youtube-dl/) and [ffmpeg](https://ffmpeg.org/).
+Youtube downloader/MP3 encoder wrapper using [youtube-dl](https://github.com/rg3/youtube-dl/) and [ffmpeg](https://ffmpeg.org/).
 
 Get and slice MP3 (audio only) from Youtube videos.
 
 ## Install
 
 ```bash
-npm install
+npm install -g
+```
+
+## Command line interface
+
+Show help:
+```shell
+youtube-to-mp3 --help
+```
+
+Download the entire track in the current directory from the given Youtube URL:
+```shell
+youtube-to-mp3 --url https://www.youtube.com/watch?v=XXXXX
+```
+You can also specify an output directory like this:
+```shell
+youtube-to-mp3 --url https://www.youtube.com/watch?v=XXXXX --output $HOME/Desktop/
 ```
 
 ## API usage
 
-Now there is two ways to use.
+**Will be changed in the next release.**
 
 The easier way:
 
 ```javascript
-import YoutubeSlicer from './YoutubeSlicer'
+import YoutubeToMP3 from './YoutubeToMP3'
 
-const youtubeSlicer = new YoutubeSlicer(
+const youtubeToMp3 = new YoutubeToMP3(
   {
     // set the output folder
     // it will be created if needed
@@ -33,9 +49,9 @@ const youtubeSlicer = new YoutubeSlicer(
 Advanced way:
 
 ```javascript
-import YoutubeSlicer from './YoutubeSlicer'
+import YoutubeToMP3 from './YoutubeToMP3'
 
-const youtubeSlicer = new YoutubeSlicer(
+const youtubeToMp3 = new YoutubeToMP3(
   {
     // set the output folder
     // it will be created if needed
@@ -116,25 +132,25 @@ const youtubeSlicer = new YoutubeSlicer(
 and handle events as usual:
 
 ```javascript
-youtubeSlicer.on('downloading', (videoId, outputLine) => {
+youtubeToMp3.on('downloading', (videoId, outputLine) => {
   console.log(`Downloading Youtube video ID ${videoId}: ${outputLine}`)
 })
 
-youtubeSlicer.on('encoding', (videoId, outputLine) => {
+youtubeToMp3.on('encoding', (videoId, outputLine) => {
   console.log(`Encoding Youtube video ID ${videoId}: ${outputLine}`)
 })
 
-youtubeSlicer.on('downloaded', (videoId, success) => {
+youtubeToMp3.on('downloaded', (videoId, success) => {
   console.log(`Youtube video ID ${videoId} downloaded with success`)
 })
 
-youtubeSlicer.on('encoded', (videoId, success) => {
+youtubeToMp3.on('encoded', (videoId, success) => {
   console.log(`Youtube video ID ${videoId} encoded with success`)
 })
 
-youtubeSlicer.on('error', (videoId, err) => {
+youtubeToMp3.on('error', (videoId, err) => {
   console.error(err)
 })
 
-youtubeSlicer.run()
+youtubeToMp3.run()
 ```
