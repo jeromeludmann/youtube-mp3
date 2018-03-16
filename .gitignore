@@ -1,6 +1,4 @@
 dist/
-bin/
 node_modules/
 src/test.js
 .vscode/
-out/
