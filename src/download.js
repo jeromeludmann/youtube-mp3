@@ -2,22 +2,23 @@ import path from 'path'
 import { spawn } from 'child_process'
 import url from 'url'
 
-export function downloadFromYoutube({ key, url, target }, callback) {
+export function downloadFromYoutube({ key, url, target, verbose = false }, callback) {
   return new Promise((resolve, reject) => {
     let extractedFile = null
 
     const youtubeDlArgs = [
-      // '--verbose',
       '-f', 'bestaudio',
       '--add-metadata',
       '--extract-audio',
-      // '--prefer-ffmpeg',
-      // '--prefer-avconv',
       '-k',
       rebuildUrl(url),
       '-o',
       target
     ]
+
+    if (verbose) {
+      youtubeDlArgs.push('--verbose')
+    }
 
     const youtubedl = spawn(path.resolve(__dirname, '..', 'bin', 'youtube-dl'), youtubeDlArgs)
 
