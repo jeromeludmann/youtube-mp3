@@ -31,7 +31,6 @@
     "mocha": "^3.3.0"
   },
   "dependencies": {
-    "optimist": "^0.6.1",
     "rimraf": "^2.6.1",
     "yargs": "^11.0.0"
   }
