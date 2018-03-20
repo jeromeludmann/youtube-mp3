@@ -4,10 +4,9 @@
   "description": "Get and slice MP3 from Youtube",
   "main": "dist/index.js",
   "scripts": {
-    "postinstall": "npm run build",
-    "update-youtube-dl": "sh util/update-youtube-dl.sh",
+    "postinstall": "./get-youtube-dl.sh",
     "build": "babel src/ --out-dir dist/ --minified",
-    "clean": "rimraf dist/",
+    "clean": "rimraf dist/ bin/",
     "dev": "node -r babel-register src/cli.js"
   },
   "bin": {
