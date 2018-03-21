@@ -6,23 +6,23 @@ Get and slice MP3 (audio only) from Youtube videos.
 
 ## Install
 
-```bash
-npm install -g
+```
+npm install -g jeromeludmann/youtube-to-mp3
 ```
 
 ## Command line interface
 
 Show help:
-```shell
+```
 youtube-to-mp3 --help
 ```
 
 Download the entire track in the current directory from the given Youtube URL:
-```shell
+```
 youtube-to-mp3 --url https://www.youtube.com/watch?v=XXXXX
 ```
 You can also specify an output directory like this:
-```shell
+```
 youtube-to-mp3 --url https://www.youtube.com/watch?v=XXXXX --output $HOME/Desktop/
 ```
 

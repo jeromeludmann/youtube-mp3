@@ -1,5 +1,15 @@
 #!/usr/bin/env bash
 
+URL=https://yt-dl.org/downloads/latest/youtube-dl
+
 mkdir -p bin
-curl -L https://yt-dl.org/downloads/latest/youtube-dl -o bin/youtube-dl
+
+which curl
+
+if [ $? -eq 0 ]; then
+	curl -L $URL -o bin/youtube-dl
+else
+	wget $URL -O bin/youtube-dl
+fi
+
 chmod +x bin/youtube-dl
