@@ -1,0 +1,27 @@
+{
+  "videos": [
+    {
+      "url": "https://www.youtube.com/watch?v=XXXXX",
+      "tags": {
+        "artist": "Artist name",
+        "album": "Album name"
+      },
+      "slices": [
+        {
+          "tags": {
+            "title": "Title 1"
+          },
+          "start": "00:00:00",
+          "end": "next"
+        },
+        {
+          "tags": {
+            "title": "Title 2"
+          },
+          "start": "00:00:30",
+          "end": "00:01:25"
+        }
+      ]
+    }
+  ]
+}

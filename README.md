@@ -19,16 +19,51 @@ youtube-to-mp3 --help
 
 Download the entire track in the current directory from the given Youtube URL:
 ```
-youtube-to-mp3 --url https://www.youtube.com/watch?v=XXXXX
+youtube-to-mp3 --input https://www.youtube.com/watch?v=XXXXX
 ```
+
 You can also specify an output directory like this:
 ```
-youtube-to-mp3 --url https://www.youtube.com/watch?v=XXXXX --output $HOME/Desktop/
+youtube-to-mp3 --input https://www.youtube.com/watch?v=XXXXX --output $HOME/Desktop/
+```
+
+The advanced mode allows you to download and slice/retag:
+```
+youtube-to-mp3 --input slices.json
+```
+`slices.json` could look like below:
+```json
+{
+  "videos": [
+    {
+      "url": "https://www.youtube.com/watch?v=XXXXX",
+      "tags": {
+        "artist": "Artist name",
+        "album": "Album name"
+      },
+      "slices": [
+        {
+          "tags": {
+            "title": "Title 1"
+          },
+          "start": "00:00:00",
+          "end": "next"
+        },
+        {
+          "tags": {
+            "title": "Title 2"
+          },
+          "start": "00:00:30",
+          "end": "00:01:25"
+        }
+      ]
+    }
+  ]
+}
+
 ```
 
 ## API usage
-
-**Will be changed in the next release.**
 
 The easier way:
 
