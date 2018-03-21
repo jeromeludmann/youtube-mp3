@@ -6,12 +6,11 @@ import yargs from 'yargs';
 import { bin } from '../package.json'
 
 const argv = yargs
-  .usage(`Usage: ${Object.keys(bin)[0]} -u <youtube url> [-o <output directory>]`)
+  .usage(`Usage: ${Object.keys(bin)[0]} --input <http://url|file.json> [--output <directory>]`)
   .options({
-    url: {
-      alias: 'u',
-      demand: true,
-      describe: 'Youtube URL',
+    input: {
+      alias: 'i',
+      describe: 'Youtube URL or JSON file',
       demandOption: true,
       type: 'string',
       requiresArg: true
@@ -19,7 +18,7 @@ const argv = yargs
     output: {
       alias: 'o',
       default: '.',
-      describe: 'Output directory',
+      describe: 'Generated MP3 directory',
       type: 'string',
       requiresArg: true
     },
@@ -31,11 +30,18 @@ const argv = yargs
   })
   .argv;
 
-const youtubeToMp3 = new YoutubeToMP3({
+const opts = {
   output: argv.output,
-  videoUrl: argv.url,
   verbose: argv.verbose
-})
+}
+
+if (argv.input.indexOf('http://') > -1) {
+  opts.videoUrl = argv.input
+} else {
+  opts.videos = require(process.cwd()+'/'+argv.input).videos
+}
+
+const youtubeToMp3 = new YoutubeToMP3(opts)
 
 youtubeToMp3.on('downloading', (videoId, outputLine) =>
   process.stdout.write(`Downloading ${videoId}: ${outputLine}`))
