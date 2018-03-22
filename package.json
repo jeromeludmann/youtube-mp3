@@ -30,6 +30,7 @@
   "dependencies": {
     "babel-runtime": "^6.23.0",
     "rimraf": "^2.6.1",
+    "shelljs": "^0.8.1",
     "yargs": "^11.0.0"
   }
 }

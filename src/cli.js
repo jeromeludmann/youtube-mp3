@@ -3,6 +3,7 @@
 import path from 'path'
 import YoutubeToMP3 from './index'
 import yargs from 'yargs';
+import shell from 'shelljs'
 import { bin } from '../package.json'
 
 const argv = yargs
@@ -10,35 +11,45 @@ const argv = yargs
   .options({
     input: {
       alias: 'i',
-      describe: 'Youtube URL or JSON file',
-      demandOption: true,
+      describe: 'Set the Youtube URL or fullfilled JSON file',
       type: 'string',
       requiresArg: true
     },
     output: {
       alias: 'o',
       default: '.',
-      describe: 'Generated MP3 directory',
+      describe: 'Set the output MP3 directory',
       type: 'string',
       requiresArg: true
     },
+    generate: {
+      alias: 'g',
+      describe: 'Generate a ready to fill JSON file',
+      type: 'boolean'
+    },
     verbose: {
       alias: 'v',
-      describe: 'Verbose mode',
+      describe: 'Enable verbose mode',
       type: 'boolean'
     }
   })
   .argv;
+
+if (argv.generate) {
+  // copy
+  shell.cp(`${__dirname}/../example.json`, process.cwd())
+  process.exit(0)
+}
 
 const opts = {
   output: argv.output,
   verbose: argv.verbose
 }
 
-if (/^https?:\/\//.test(argv.input)){
+if (/^https?:\/\//.test(argv.input)) {
   opts.videoUrl = argv.input
 } else {
-  opts.videos = require(process.cwd()+'/'+argv.input).videos
+  opts.videos = require(process.cwd() + '/' + argv.input).videos
 }
 
 const youtubeToMp3 = new YoutubeToMP3(opts)
