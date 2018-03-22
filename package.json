@@ -5,11 +5,11 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "babel src/ --out-dir dist/ --minified",
-    "clean": "rimraf dist/ bin/",
-    "dev": "node -r babel-register src/cli.js"
+    "clean": "rimraf dist/",
+    "dev": "node -r babel-register src/cli/index.js"
   },
   "bin": {
-    "youtube-to-mp3": "./dist/cli.js"
+    "youtube-to-mp3": "./dist/cli/index.js"
   },
   "keywords": [
     "youtube",

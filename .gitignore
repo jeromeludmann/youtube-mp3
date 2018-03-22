@@ -2,3 +2,4 @@ node_modules/
 .vscode/
 slices-*
 youtube_*
+tmp/
