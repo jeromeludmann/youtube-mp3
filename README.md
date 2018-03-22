@@ -4,68 +4,54 @@ Youtube downloader/MP3 encoder wrapper using [youtube-dl](https://github.com/rg3
 
 Get and slice MP3 (audio only) from Youtube videos.
 
-## Install
+## Installation
+
+First of all, the following dependencies are required:
+
+- `node.js`
+- `ffmpeg`
+
+Then, install just by typing:
 
 ```
 npm install -g jeromeludmann/youtube-to-mp3
 ```
 
-## Command line interface
+## Usage
 
-Show help:
-```
-youtube-to-mp3 --help
-```
+#### Command Line Interface
+
+##### Simple mode
 
 Download the entire track in the current directory from the given Youtube URL:
 ```
-youtube-to-mp3 --input https://www.youtube.com/watch?v=XXXXX
+youtube-to-mp3 get https://www.youtube.com/watch?v=XXXXX
 ```
 
 You can also specify an output directory like this:
 ```
-youtube-to-mp3 --input https://www.youtube.com/watch?v=XXXXX --output $HOME/Desktop/
+youtube-to-mp3 get https://www.youtube.com/watch?v=XXXXX $HOME/Desktop/
 ```
 
-The advanced mode allows you to download and slice/retag:
-```
-youtube-to-mp3 --input slices.json
-```
-`slices.json` could look like below:
-```json
-{
-  "videos": [
-    {
-      "url": "https://www.youtube.com/watch?v=XXXXX",
-      "tags": {
-        "artist": "Artist name",
-        "album": "Album name"
-      },
-      "slices": [
-        {
-          "tags": {
-            "title": "Title 1"
-          },
-          "start": "00:00:00",
-          "end": "next"
-        },
-        {
-          "tags": {
-            "title": "Title 2"
-          },
-          "start": "00:00:30",
-          "end": "00:01:25"
-        }
-      ]
-    }
-  ]
-}
+Note that it will be automatically tagged. See below for more options.
 
+##### Advanced mode
+
+The advanced mode allows you to slice/tag many MP3s from many Youtube videos in one shot.
+
+It use a JSON file which contains the entire slices/tags:
+```
+youtube-to-mp3 slice file.json
 ```
 
-## API usage
+In order to have a sample of this file, you can generate it:
+```
+youtube-to-mp3 init file.json
+```
 
-The easier way:
+#### API
+
+##### Simple mode
 
 ```javascript
 import YoutubeToMP3 from './YoutubeToMP3'
@@ -81,7 +67,7 @@ const youtubeToMp3 = new YoutubeToMP3(
 )
 ```
 
-Advanced way:
+##### Advanced mode
 
 ```javascript
 import YoutubeToMP3 from './YoutubeToMP3'
