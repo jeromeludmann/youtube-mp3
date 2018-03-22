@@ -35,7 +35,7 @@ const opts = {
   verbose: argv.verbose
 }
 
-if (argv.input.indexOf('http://') > -1) {
+if (/^https?:\/\//.test(argv.input)){
   opts.videoUrl = argv.input
 } else {
   opts.videos = require(process.cwd()+'/'+argv.input).videos
