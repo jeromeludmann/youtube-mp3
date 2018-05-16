@@ -7,7 +7,7 @@ import rimraf from 'rimraf'
 import { downloadFromYoutube } from './download'
 import { encodeToMp3 } from './encode'
 
-export default class YoutubeToMP3 extends EventEmitter {
+export default class YoutubeMP3 extends EventEmitter {
   constructor({
     output = '',
     videos = null,
@@ -19,9 +19,7 @@ export default class YoutubeToMP3 extends EventEmitter {
     if (videos && videoUrl) {
       throw new Error('videos OR videoUrl should be given, not both')
     }
-    this.videos = !videos || videos.length === 0
-      ? [{ url: videoUrl }]
-      : videos
+    this.videos = !videos || videos.length === 0 ? [{ url: videoUrl }] : videos
     this.verbose = verbose
   }
 
@@ -41,12 +39,21 @@ export default class YoutubeToMP3 extends EventEmitter {
         // if we decide to parallelize the Youtube calls in the next releases.
         youtubeId = this.getIdFromYoutubeUrl(video.url)
 
-        downloadedFile = await downloadFromYoutube({
-          key: youtubeId,
-          url: video.url,
-          target: path.resolve(this.output, 'tmp', `youtube_${youtubeId}.%(ext)s`),
-          verbose: this.verbose
-        }, (key, outputLine) => this.emit('downloading', key, outputLine))
+        const timestamp = Date.now()
+
+        downloadedFile = await downloadFromYoutube(
+          {
+            key: youtubeId,
+            url: video.url,
+            target: path.resolve(
+              this.output,
+              `tmp_${timestamp}`,
+              `youtube_${youtubeId}.%(ext)s`
+            ),
+            verbose: this.verbose
+          },
+          (key, outputLine) => this.emit('downloading', key, outputLine)
+        )
 
         this.emit('downloaded', youtubeId, downloadedFile)
 
@@ -61,8 +68,6 @@ export default class YoutubeToMP3 extends EventEmitter {
           defaultSlice.tags = video.tags
           video.slices.push(defaultSlice)
         }
-
-        const timestamp = Date.now()
 
         for (const k in video.slices) {
           const slice = video.slices[k]
@@ -84,26 +89,34 @@ export default class YoutubeToMP3 extends EventEmitter {
           slice.tags.title = slice.tags.title || video.tags.title
           slice.tags.track = Number(k) + 1
 
-          encodedFiles.push(await encodeToMp3({
-            key: youtubeId,
-            sourceFile: downloadedFile,
-            quality: video.quality,
-            slice,
-            target: path.resolve(this.output, `youtube_${youtubeId}_${timestamp}`),
-            withTrackNumber: video.slices.length > 1,
-            verbose: this.verbose
-          }, (key, outputLine) => this.emit('encoding', key, outputLine)))
+          encodedFiles.push(
+            await encodeToMp3(
+              {
+                key: youtubeId,
+                sourceFile: downloadedFile,
+                quality: video.quality,
+                slice,
+                target: path.resolve(
+                  this.output,
+                  `youtube_${youtubeId}_${timestamp}`
+                ),
+                withTrackNumber: video.slices.length > 1,
+                verbose: this.verbose
+              },
+              (key, outputLine) => this.emit('encoding', key, outputLine)
+            )
+          )
         }
 
         this.emit('encoded', youtubeId, encodedFiles)
+
+        // Remove temporary folder
+        rimraf(path.resolve(this.output, `tmp_${timestamp}`), () => {
+          console.log(`folder tmp_${timestamp} removed`)
+        })
       }
     } catch (err) {
       this.emit('error', youtubeId, err)
-    } finally {
-      // Remove temporary folder
-      rimraf(path.resolve(this.output, 'tmp'), () => {
-        console.log('tmp removed')
-      })
     }
   }
 

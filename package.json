@@ -6,11 +6,11 @@
   "scripts": {
     "build": "babel src/ --out-dir dist/ --minified",
     "clean": "rimraf dist/",
-    "dev": "node -r babel-register src/cli/index.js",
+    "dev": "node -r babel-register src/cli/index.sh.js",
     "prepublish": "npm run clean && npm run build"
   },
   "bin": {
-    "youtubemp3": "./dist/cli/index.js"
+    "youtubemp3": "./dist/cli/index.sh.js"
   },
   "keywords": ["youtube", "mp3", "slice", "download"],
   "author": "Jerome Ludmann",

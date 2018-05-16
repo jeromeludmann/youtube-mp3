@@ -1,7 +1,7 @@
-import YoutubeToMP3 from '../api/index'
+import YoutubeMP3 from '../api/index'
 
 export const getInstance = opts => {
-  const instance = new YoutubeToMP3(opts)
+  const instance = new YoutubeMP3(opts)
 
   instance.on('downloading', (videoId, outputLine) =>
     process.stdout.write(`Downloading ${videoId}: ${outputLine}`))
