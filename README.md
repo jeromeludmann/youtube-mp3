@@ -2,8 +2,6 @@
 
 Get MP3 from Youtube videos.
 
-Made for audio only.
-
 ## Installation
 
 First of all, you have to install:
