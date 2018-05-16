@@ -15,7 +15,7 @@ export default {
     const destination = addMissingJsonSuffix(argv.destination)
 
     const { code } = cp(
-      `${__dirname}/../../example.json`,
+      `${__dirname}/../../slice-desc-sample.json`,
       destination
     )
 
@@ -28,4 +28,4 @@ export default {
 }
 
 const addMissingJsonSuffix = path =>
-  path.endsWith('.json') ? path : `${path}.json`  
+  path.endsWith('.json') ? path : `${path}.json`
