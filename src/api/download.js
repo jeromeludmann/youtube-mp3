@@ -20,7 +20,7 @@ export function downloadFromYoutube({ key, url, target, verbose = false }, callb
       youtubeDlArgs.push('--verbose')
     }
 
-    const youtubedl = spawn(path.resolve(__dirname, '..', '..', 'bin', 'youtube-dl'), youtubeDlArgs)
+    const youtubedl = spawn('youtube-dl', youtubeDlArgs)
 
     const onData = data => {
       const filter = '[ffmpeg] Adding metadata to'
