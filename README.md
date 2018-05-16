@@ -64,7 +64,7 @@ npm i -S @jeromeludmann/youtubemp3
 ##### Simple mode
 
 ```javascript
-import YoutubeMP3 from './YoutubeMP3'
+import YoutubeMP3 from '@jeromeludmann/youtubemp3'
 
 const youtubeMp3 = new YoutubeMP3(
   {
@@ -80,7 +80,7 @@ const youtubeMp3 = new YoutubeMP3(
 ##### Advanced mode
 
 ```javascript
-import YoutubeMP3 from './YoutubeMP3'
+import YoutubeMP3 from '@jeromeludmann/youtubemp3'
 
 const youtubeMp3 = new YoutubeMP3({
   // set the output folder
