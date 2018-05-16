@@ -2,7 +2,7 @@
   "name": "youtubemp3",
   "version": "0.6.0",
   "description": "Get and slice MP3 from Youtube",
-  "main": "dist/index.js",
+  "main": "dist/api/index.js",
   "scripts": {
     "build": "babel src/ --out-dir dist/ --minified",
     "clean": "rimraf dist/",
