@@ -1,6 +1,6 @@
 {
   "name": "@jeromeludmann/youtubemp3",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "Get and slice MP3 from Youtube",
   "main": "dist/api/index.js",
   "scripts": {
@@ -12,7 +12,12 @@
   "bin": {
     "youtubemp3": "./dist/cli/index.sh.js"
   },
-  "keywords": ["youtube", "mp3", "slice", "download"],
+  "keywords": [
+    "youtube",
+    "mp3",
+    "slice",
+    "download"
+  ],
   "author": "Jerome Ludmann",
   "license": "MIT",
   "devDependencies": {
