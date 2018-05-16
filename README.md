@@ -17,7 +17,7 @@ Please refer to given links above in order to get these depedencies installed.
 Once it's done, you can install `youtubemp3` just by typing:
 
 ```
-npm install -g youtubemp3
+npm install -g @jeromeludmann/youtubemp3
 ```
 
 ## Usage
