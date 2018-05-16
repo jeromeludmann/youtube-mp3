@@ -14,7 +14,7 @@ Please refer to given links above in order to get these depedencies installed.
 
 Once it's done, you can install `youtubemp3` just by typing:
 
-```
+```sh
 npm install -g @jeromeludmann/youtubemp3
 ```
 
@@ -26,13 +26,13 @@ npm install -g @jeromeludmann/youtubemp3
 
 Download the entire track in the current directory from the given Youtube URL:
 
-```
+```sh
 youtubemp3 get https://www.youtube.com/watch?v=XXXXX
 ```
 
 You can also specify an output directory like this:
 
-```
+```sh
 youtubemp3 get https://www.youtube.com/watch?v=XXXXX $HOME/Desktop/
 ```
 
@@ -44,7 +44,7 @@ The advanced mode allows you to slice/tag many MP3 from many Youtube videos in o
 
 It use a JSON file containing the entire description of slices/tags:
 
-```
+```sh
 # generate a sample description file
 youtubemp3 init album_description.json
 
@@ -53,6 +53,13 @@ youtubemp3 slice album_description.json
 ```
 
 #### API
+
+It's recommended to install `youtubemp3` locally:
+
+```sh
+cd project/
+npm i -S @jeromeludmann/youtubemp3
+```
 
 ##### Simple mode
 
