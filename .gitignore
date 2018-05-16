@@ -1,5 +1,3 @@
 node_modules/
+dist/
 .vscode/
-slices-*
-youtube_*
-tmp/

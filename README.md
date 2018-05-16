@@ -1,4 +1,4 @@
-# youtube-to-mp3
+# youtubemp3
 
 Youtube downloader/MP3 encoder wrapper using [youtube-dl](https://github.com/rg3/youtube-dl/) and [ffmpeg](https://ffmpeg.org/).
 
@@ -14,7 +14,7 @@ First of all, the following dependencies are required:
 Then, install just by typing:
 
 ```
-npm install -g jeromeludmann/youtube-to-mp3
+npm install -g youtubemp3
 ```
 
 ## Usage
@@ -25,12 +25,12 @@ npm install -g jeromeludmann/youtube-to-mp3
 
 Download the entire track in the current directory from the given Youtube URL:
 ```
-youtube-to-mp3 get https://www.youtube.com/watch?v=XXXXX
+youtubemp3 get https://www.youtube.com/watch?v=XXXXX
 ```
 
 You can also specify an output directory like this:
 ```
-youtube-to-mp3 get https://www.youtube.com/watch?v=XXXXX $HOME/Desktop/
+youtubemp3 get https://www.youtube.com/watch?v=XXXXX $HOME/Desktop/
 ```
 
 Note that it will be automatically tagged. See below for more options.
@@ -41,12 +41,12 @@ The advanced mode allows you to slice/tag many MP3s from many Youtube videos in 
 
 It use a JSON file which contains the entire slices/tags:
 ```
-youtube-to-mp3 slice file.json
+youtubemp3 slice file.json
 ```
 
 In order to have a sample of this file, you can generate it:
 ```
-youtube-to-mp3 init file.json
+youtubemp3 init file.json
 ```
 
 #### API
