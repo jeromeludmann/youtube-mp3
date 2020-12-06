@@ -1,6 +1,6 @@
 {
   "name": "@jeromeludmann/youtubemp3",
-  "version": "0.7.6",
+  "version": "0.7.7",
   "description": "Get and slice MP3 from Youtube",
   "main": "dist/api/index.js",
   "scripts": {
