@@ -29,7 +29,7 @@
     "babel-runtime": "^6.26.0",
     "rimraf": "^2.6.1",
     "shelljs": "^0.8.1",
-    "yargs": "^11.0.0"
+    "yargs": "^16.2.0"
   },
   "repository": {
     "type": "git",
