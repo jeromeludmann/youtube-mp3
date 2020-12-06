@@ -1,9 +1,8 @@
-import path from 'path'
 import { spawn } from 'child_process'
 import url from 'url'
 
 export function downloadFromYoutube({ key, url, target, verbose = false }, callback) {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     let extractedFile = null
 
     const youtubeDlArgs = [

@@ -19,12 +19,12 @@ export function encodeToMp3({
   withTrackNumber = true,
   verbose = false
 }, callback) {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     if (!fs.existsSync(target)) {
       fs.mkdirSync(target)
     }
 
-    const args = getArguments(key, sourceFile, quality, slice, withTrackNumber, verbose)
+    const args = getArguments(sourceFile, quality, slice, withTrackNumber, verbose)
     const filename = path.resolve(target, generateFilename(key, slice, withTrackNumber))
     args.push(filename)
 
@@ -48,7 +48,7 @@ export function encodeToMp3({
   })
 }
 
-function getArguments(key, sourceFile, quality, slice, withTrackNumber, verbose) {
+function getArguments(sourceFile, quality, slice, withTrackNumber, verbose) {
   const ffmpegArgs = [
     '-loglevel', verbose ? 'debug' : 'info',
     '-i', sourceFile,
@@ -110,7 +110,7 @@ function generateFilename(key, slice, withTrackNumber) {
   const filename = []
 
   if (withTrackNumber && slice.tags.track) {
-    filename.push(`0${slice.tags.track}`.slice(-2))
+    filename.push(String(slice.tags.track).padStart(4, "0"))
   }
 
   if (slice.tags.artist) {
