@@ -8,7 +8,6 @@ First of all, you have to install:
 
 * [youtube-dl](https://github.com/rg3/youtube-dl/)
 * [ffmpeg](https://ffmpeg.org/)
-* [node.js](https://nodejs.org/) (obviously...)
 
 Please refer to given links above in order to get these depedencies installed.
 
@@ -47,6 +46,8 @@ It use a JSON file containing the entire description of slices/tags:
 ```sh
 # generate a sample description file
 youtubemp3 init album_description.json
+
+# edit 'album_description.json' ...
 
 # run the process of MP3 slicing
 youtubemp3 slice album_description.json
